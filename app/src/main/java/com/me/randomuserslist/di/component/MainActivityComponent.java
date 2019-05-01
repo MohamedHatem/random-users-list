@@ -1,6 +1,7 @@
 package com.me.randomuserslist.di.component;
 
 
+import com.me.randomuserslist.MainActivity;
 import com.me.randomuserslist.adapter.RandomUserAdapter;
 import com.me.randomuserslist.api.RandomUsersApi;
 import com.me.randomuserslist.di.interfaces.MainActivityScope;
@@ -15,8 +16,7 @@ import dagger.Component;
 @MainActivityScope
 public interface MainActivityComponent {
 
-    RandomUserAdapter getRandomUserAdapter();
+    void injectMainActivity(MainActivity mainActivity);
 
-    RandomUsersApi getRandomUserService();
 
 }

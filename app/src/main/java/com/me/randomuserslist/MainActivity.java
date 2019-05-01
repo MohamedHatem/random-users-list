@@ -18,6 +18,8 @@ import com.me.randomuserslist.model.RandomUsers;
 import com.squareup.picasso.Picasso;
 
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,8 +28,9 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    @Inject
     RandomUserAdapter mAdapter;
-
+    @Inject
     RandomUsersApi randomUsersApi;
 
 
@@ -51,11 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 .randomUserComponent(RandomUserApplication.get(this).getRandomUserApplicationComponent())
                 .build();
 
-        randomUsersApi = mainActivityComponent.getRandomUserService();
-        randomUsersApi = mainActivityComponent.getRandomUserService();
-        randomUsersApi = mainActivityComponent.getRandomUserService();
 
-        mAdapter = mainActivityComponent.getRandomUserAdapter();
+        mainActivityComponent.injectMainActivity(this);
 
         populateUsers();
 
