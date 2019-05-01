@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     RandomUsersApi randomUsersApi;
     Picasso picasso;
 
+    /*
+      TODO :
+         1- To understand how the singleton scope works from the generated DI files
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 .contextModule(new ContextModule(this))
                 .build();
         picasso = daggerRandomUserComponent.getPicasso();
-        randomUsersApi = daggerRandomUserComponent.getRandomUserService();
 
         populateUsers();
 

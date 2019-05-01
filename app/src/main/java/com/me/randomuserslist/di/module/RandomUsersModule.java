@@ -1,5 +1,7 @@
 package com.me.randomuserslist.di.module;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.me.randomuserslist.api.RandomUsersApi;
@@ -14,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module(includes = OkHttpClientModule.class)
 public class RandomUsersModule {
 
+    private static final String LOG_TAG = RandomUsersModule.class.getSimpleName();
 
     @Provides
     RandomUsersApi randomUsersApi(Retrofit retrofit) {
@@ -24,6 +27,7 @@ public class RandomUsersModule {
     @Provides
     Retrofit retrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonConverterFactory) {
 
+        Log.d(LOG_TAG, "retrofit: instance created");
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://randomuser.me/")
