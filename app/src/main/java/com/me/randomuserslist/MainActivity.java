@@ -8,9 +8,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.me.randomuserslist.adapter.RandomUserAdapter;
 import com.me.randomuserslist.api.RandomUsersApi;
+import com.me.randomuserslist.di.component.DaggerMainActivityComponent;
 import com.me.randomuserslist.di.component.DaggerRandomUserComponent;
+import com.me.randomuserslist.di.component.MainActivityComponent;
 import com.me.randomuserslist.di.component.RandomUserComponent;
 import com.me.randomuserslist.di.module.ContextModule;
+import com.me.randomuserslist.di.module.MainActivityModule;
 import com.me.randomuserslist.model.RandomUsers;
 import com.squareup.picasso.Picasso;
 
@@ -26,11 +29,14 @@ public class MainActivity extends AppCompatActivity {
     RandomUserAdapter mAdapter;
 
     RandomUsersApi randomUsersApi;
-    Picasso picasso;
+
 
     /*
       TODO :
-         1- To understand how the singleton scope works from the generated DI files
+         1- To understand how the singleton scope works from the generated DI files.
+         2- To know Acitvity scope objects
+         3- To Differentiate between Activity scope and application scope objects
+         4- To know what is the meaning of Activity life scope ?
 
      */
 
@@ -40,10 +46,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
 
-        RandomUserComponent daggerRandomUserComponent = DaggerRandomUserComponent.builder()
-                .contextModule(new ContextModule(this))
+        MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
+                .mainActivityModule(new MainActivityModule(this))
+                .randomUserComponent(RandomUserApplication.get(this).getRandomUserApplicationComponent())
                 .build();
-        picasso = daggerRandomUserComponent.getPicasso();
+
+        randomUsersApi = mainActivityComponent.getRandomUserService();
+        randomUsersApi = mainActivityComponent.getRandomUserService();
+        randomUsersApi = mainActivityComponent.getRandomUserService();
+
+        mAdapter = mainActivityComponent.getRandomUserAdapter();
 
         populateUsers();
 
@@ -60,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RandomUsers> call, @NonNull Response<RandomUsers> response) {
                 if (response.isSuccessful()) {
-                    mAdapter = new RandomUserAdapter(picasso);
                     mAdapter.setItems(response.body().getResults());
                     recyclerView.setAdapter(mAdapter);
                 }
